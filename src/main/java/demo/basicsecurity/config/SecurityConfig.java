@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -28,9 +29,10 @@ import org.springframework.security.web.server.ui.LoginPageGeneratingWebFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
+	/* 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(HttpSecurity http) throws Exception { 
 		//인가
 		http
 			.authorizeRequests()
@@ -104,5 +106,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.maximumSessions(1) 
 			.maxSessionsPreventsLogin(false);
 	}
+*/
 	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		//메모리 방식
+		auth.inMemoryAuthentication().withUser("user").password("{noop}1111").roles("USER"); //{noop} 평문저장 암호화형태
+//		auth.inMemoryAuthentication().withUser("sys").password("{noop}1111").roles("SYS"); //{noop} 평문저장 암호화형태
+//		auth.inMemoryAuthentication().withUser("admin").password("{noop}1111").roles("ADMIN"); //{noop} 평문저장 암호화형태
+		auth.inMemoryAuthentication().withUser("sys").password("{noop}1111").roles("SYS", "USER"); //{noop} 평문저장 암호화형태
+		auth.inMemoryAuthentication().withUser("admin").password("{noop}1111").roles("ADMIN", "SYS", "USER"); //{noop} 평문저장 암호화형태
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception { 
+		http
+			.authorizeRequests()
+			.antMatchers("/user").hasRole("USER")
+			.antMatchers("/admin/pay").hasRole("ADMIN")
+			.antMatchers("/admin/**").access("hasRole('ADMIN') or hasRole('SYS')")
+			.anyRequest().authenticated();
+		
+		http
+			.formLogin();
+	}
 }
