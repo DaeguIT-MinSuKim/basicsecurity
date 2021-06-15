@@ -30,13 +30,14 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.security.web.server.ui.LoginPageGeneratingWebFilter;
 
+/*
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //	@Autowired
 //	private UserDetailsService userDetailsService;
 
-/* 
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception { 
 		//인가
@@ -166,7 +167,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             });
             
 	}
-*/
+
 	//csrf 공격
     @Override
     protected void configure(HttpSecurity http) throws Exception { 
@@ -179,3 +180,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 	
 }
+*/
