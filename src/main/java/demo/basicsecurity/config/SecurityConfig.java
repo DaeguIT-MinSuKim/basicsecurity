@@ -33,8 +33,8 @@ import org.springframework.security.web.server.ui.LoginPageGeneratingWebFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Autowired
-	private UserDetailsService userDetailsService;
+//	@Autowired
+//	private UserDetailsService userDetailsService;
 
 /* 
 	@Override
@@ -112,7 +112,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.maximumSessions(1) 
 			.maxSessionsPreventsLogin(false);
 	}
-*/
+
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -164,9 +164,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     response.sendRedirect("/denied");
                 }
             });
+            
 	}
-
-	
-	
+*/
+	//csrf 공격
+    @Override
+    protected void configure(HttpSecurity http) throws Exception { 
+        http
+            .authorizeRequests()
+            .anyRequest().permitAll();
+        
+        http
+            .formLogin();
+    }
 	
 }
