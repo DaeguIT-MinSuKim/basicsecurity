@@ -30,4 +30,15 @@ public class SecurityController {
 	public String admin() {
 		return "admin";
 	}
+	
+	//인증및인가 예외처리
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+	 
+    @GetMapping("/denied")
+    public String denied() {
+        return "Access is denied";
+    }
 }
